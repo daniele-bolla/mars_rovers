@@ -1,4 +1,4 @@
-import { DIRECTIONS, Plateau, Rover, isDirection } from "./types";
+import { DIRECTIONS, Plateau, Rover, isDirection } from "../types";
 
 type ParseResult<T> =
   | { success: true; value: T }

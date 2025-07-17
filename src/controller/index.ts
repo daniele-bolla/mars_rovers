@@ -1,9 +1,9 @@
 import {
   parseRoverWithThrowErrors,
   parsePlateauWithThrowErrors,
-} from "./parser";
-import { executeCommandsSafe, roverToString } from "./rover";
-import { Plateau } from "./types";
+} from "../parser";
+import { executeCommandsSafe, roverToString } from "../rover";
+import { Plateau } from "../types";
 
 const processRoverSafe = (
   roverLine: string,
@@ -75,23 +75,23 @@ export const processInputWithErrors = (
   return { results, errors: allErrors };
 };
 
-// Functional version using array methods
-export const processInputFunctional = (input: string): string[] => {
-  const lines = input.trim().split("\n");
-  const plateau = parsePlateauWithThrowErrors(lines[0]);
+// // Functional version using array methods
+// export const processInputFunctional = (input: string): string[] => {
+//   const lines = input.trim().split("\n");
+//   const plateau = parsePlateauWithThrowErrors(lines[0]);
 
-  // Create pairs and process them
-  return lines
-    .slice(1)
-    .reduce<string[][]>((pairs, line, index) => {
-      if (index % 2 === 0) {
-        return [...pairs, [line]];
-      }
-      pairs[pairs.length - 1].push(line);
-      return pairs;
-    }, [])
-    .map(
-      ([roverLine, commandLine]) =>
-        processRoverSafe(roverLine, commandLine, plateau).output
-    );
-};
+//   // Create pairs and process them
+//   return lines
+//     .slice(1)
+//     .reduce<string[][]>((pairs, line, index) => {
+//       if (index % 2 === 0) {
+//         return [...pairs, [line]];
+//       }
+//       pairs[pairs.length - 1].push(line);
+//       return pairs;
+//     }, [])
+//     .map(
+//       ([roverLine, commandLine]) =>
+//         processRoverSafe(roverLine, commandLine, plateau).output
+//     );
+// };
