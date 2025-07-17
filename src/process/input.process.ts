@@ -10,47 +10,47 @@ export const processInputWithErrors = (
   const lines = input.trim().split("\n");
   const plateau = parsePlateauWithThrowErrors(lines[0]);
 
-  const results: string[] = [];
-  const allErrors: Array<{ rover: number; errors: string[] }> = [];
+  const initialAccumulator: {
+    results: string[];
+    errors: Array<{ rover: number; errors: string[] }>;
+  } = {
+    results: [],
+    errors: [],
+  };
 
-  let roverNumber = 0;
-  for (let i = 1; i < lines.length; i += 2) {
-    roverNumber++;
-    const roverLine = lines[i];
-    const commandLine = lines[i + 1];
+  // Group lines into rover-command pairs
+  const roverCommandPairs = lines
+    .slice(1)
+    .reduce<string[][]>((pairs, line, index) => {
+      if (index % 2 === 0) {
+        // Start a new pair
+        return [...pairs, [line]];
+      }
+      // Add command line to the last pair
+      pairs[pairs.length - 1].push(line);
+      return pairs;
+    }, []);
 
-    const { output, errors } = processRoverSafe(
-      roverLine,
-      commandLine,
-      plateau
-    );
-    results.push(output);
+  // Process each pair and accumulate results and errors
+  const finalState = roverCommandPairs.reduce(
+    (acc, [roverLine, commandLine], index) => {
+      const roverNumber = index + 1; // Rovers are 1-indexed
+      const { output, errors } = processRoverSafe(
+        roverLine,
+        commandLine,
+        plateau
+      );
 
-    if (errors.length > 0) {
-      allErrors.push({ rover: roverNumber, errors });
-    }
-  }
+      acc.results.push(output);
 
-  return { results, errors: allErrors };
+      if (errors.length > 0) {
+        acc.errors.push({ rover: roverNumber, errors });
+      }
+
+      return acc;
+    },
+    initialAccumulator
+  );
+
+  return finalState;
 };
-
-// // Functional version using array methods
-// export const processInputFunctional = (input: string): string[] => {
-//   const lines = input.trim().split("\n");
-//   const plateau = parsePlateauWithThrowErrors(lines[0]);
-
-//   // Create pairs and process them
-//   return lines
-//     .slice(1)
-//     .reduce<string[][]>((pairs, line, index) => {
-//       if (index % 2 === 0) {
-//         return [...pairs, [line]];
-//       }
-//       pairs[pairs.length - 1].push(line);
-//       return pairs;
-//     }, [])
-//     .map(
-//       ([roverLine, commandLine]) =>
-//         processRoverSafe(roverLine, commandLine, plateau).output
-//     );
-// };
