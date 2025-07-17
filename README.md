@@ -4,22 +4,22 @@ This project is an implementation of the Mars Rover technical challenge. The goa
 
 ## Code Description
 
-The codebase is written in TypeScript and follows a functional programming paradigm. The code is split into several files, each with a specific responsibility:
+The codebase is written in TypeScript and follows a simple functional programming paradigm. The code is split into several files, each with a specific responsibility:
 
--   `index.ts`: This is the main entry point of the application. It primarily handles user input/output via `readline` and orchestrates the call to `runMarsRoverApp`.
--   `app/mars-rover-app.ts`: Contains the core application logic in the `runMarsRoverApp` function, making it highly testable by separating it from direct I/O.
--   `display/grid.display.ts`: Provides utility functions for displaying the rover grid.
--   `process/input.process.ts`: This file contains the core logic for processing the input and returning the final rover positions.
--   `process/rover.process.ts`: This file handles the processing of individual rovers.
-    The unit tests for the core application logic are located in `src/__tests__/process.test.ts`.
--   `rover/`: This directory contains files related to rover operations:
-    -   `rover/directions.rover.ts`: Handles rover direction changes (turning left/right).
-    -   `rover/execute.rover.ts`: Contains functions for executing individual commands and sequences of commands.
-    -   `rover/tostring.rover.ts`: Provides a utility function to convert a rover object to its string representation.
--   `parser/`: This directory contains files responsible for parsing input strings:
-    -   `parser/plateau.parser.ts`: Parses the plateau dimensions from a string.
-    -   `parser/rover.parser.ts`: Parses the rover's initial position and direction from a string.
--   `types/`: This directory defines the data types used throughout the application.
+- `index.ts`: This is the main entry point of the application. It primarily handles user input/output via `readline` and orchestrates the call to `runMarsRoverApp`.
+- `app/mars-rover-app.ts`: Contains the core application logic in the `runMarsRoverApp` function, making it highly testable by separating it from direct I/O.
+- `display/grid.display.ts`: Provides utility functions for displaying the rover grid.
+- `process/input.process.ts`: This file contains the core logic for processing the input and returning the final rover positions.
+- `process/rover.process.ts`: This file handles the processing of individual rovers.
+  The unit tests for the core application logic are located in `src/__tests__/process.test.ts`.
+- `rover/`: This directory contains files related to rover operations:
+  - `rover/directions.rover.ts`: Handles rover direction changes (turning left/right).
+  - `rover/execute.rover.ts`: Contains functions for executing individual commands and sequences of commands.
+  - `rover/tostring.rover.ts`: Provides a utility function to convert a rover object to its string representation.
+- `parser/`: This directory contains files responsible for parsing input strings:
+  - `parser/plateau.parser.ts`: Parses the plateau dimensions from a string.
+  - `parser/rover.parser.ts`: Parses the rover's initial position and direction from a string.
+- `types/`: This directory defines the data types used throughout the application.
 
 ## Functional Paradigm and State Machines
 
