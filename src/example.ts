@@ -1,4 +1,4 @@
-import { processInput, processInputWithErrors } from "./controller";
+import { processInput, processInputWithErrors } from "./process";
 import { executeCommands, executeCommandsSafe, roverToString } from "./rover";
 import {
   parseRoverWithThrowErrors,

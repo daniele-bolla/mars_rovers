@@ -1,26 +1,5 @@
-import {
-  parseRoverWithThrowErrors,
-  parsePlateauWithThrowErrors,
-} from "../parser";
-import { executeCommandsSafe, roverToString } from "../rover";
-import { Plateau } from "../types";
-
-const processRoverSafe = (
-  roverLine: string,
-  commandLine: string,
-  plateau: Plateau
-): { output: string; errors: string[] } => {
-  const rover = parseRoverWithThrowErrors(roverLine);
-  const { rover: finalRover, errors } = executeCommandsSafe(
-    rover,
-    commandLine,
-    plateau
-  );
-  return {
-    output: roverToString(finalRover),
-    errors,
-  };
-};
+import { parsePlateauWithThrowErrors } from "../parser";
+import { processRoverSafe } from "./rover.process";
 
 export const processInput = (input: string): string[] => {
   const lines = input.trim().split("\n");

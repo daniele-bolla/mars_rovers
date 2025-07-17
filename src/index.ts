@@ -1,5 +1,5 @@
 import * as readline from "readline";
-import { processInput } from "./controller";
+import { processInput } from "./process";
 import {
   parsePlateauWithThrowErrors,
   parseRoverWithThrowErrors,
