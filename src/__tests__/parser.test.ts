@@ -34,4 +34,20 @@ describe('parser', () => {
       expect(result.error).toBe('Invalid direction: X, direction must be any of N, E, S, W');
     }
   });
+
+  it('parsePlateau should return error for non-positive dimensions', () => {
+    const result = parsePlateau('5 0');
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error).toBe('Plateau dimensions must be positive numbers');
+    }
+  });
+
+  it('parsePlateau should return error for dimensions exceeding maximum size', () => {
+    const result = parsePlateau('101 5');
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error).toBe('Plateau dimensions cannot exceed 100');
+    }
+  });
 });

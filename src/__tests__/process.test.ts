@@ -46,4 +46,18 @@ describe("process", () => {
       },
     ]);
   });
+
+  it("processInputWithErrors should report errors for out-of-bounds initial rover position", () => {
+    const input = `5 5\n6 2 N\nM`; // Rover starts out of bounds
+    const { results, errors } = processInputWithErrors(input);
+    expect(results).toEqual(["6 2 N"]);
+    expect(errors).toEqual([
+      {
+        rover: 1,
+        errors: [
+          "Initial rover position (6,2) is out of bounds for plateau (5,5).",
+        ],
+      },
+    ]);
+  });
 });
