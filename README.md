@@ -7,10 +7,19 @@ This project is an implementation of the Mars Rover technical challenge. The goa
 The codebase is written in TypeScript and follows a functional programming paradigm. The code is split into several files, each with a specific responsibility:
 
 -   `index.ts`: This is the main entry point of the application. It handles user input and output, and orchestrates the overall flow of the program.
--   `controller.ts`: This file contains the core logic for processing the input and returning the final rover positions. It uses a state machine to manage the rovers' state.
--   `rover.ts`: This file defines the `Rover` data structure and the functions for manipulating it. It includes functions for turning the rover left and right, moving it forward, and executing a sequence of commands.
--   `parser.ts`: This file is responsible for parsing the input string and converting it into the data structures used by the application.
--   `types.ts`: This file defines the data types used throughout the application, such as `Rover`, `Plateau`, `Position`, `Direction`, and `Command`.
+-   `process/input.process.ts`: This file contains the core logic for processing the input and returning the final rover positions.
+-   `rover/`: This directory contains files related to rover operations:
+    -   `rover/directions.rover.ts`: Handles rover direction changes (turning left/right).
+    -   `rover/execute.rover.ts`: Contains functions for executing individual commands and sequences of commands.
+    -   `rover/tostring.rover.ts`: Provides a utility function to convert a rover object to its string representation.
+-   `parser/`: This directory contains files responsible for parsing input strings:
+    -   `parser/plateau.parser.ts`: Parses the plateau dimensions from a string.
+    -   `parser/rover.parser.ts`: Parses the rover's initial position and direction from a string.
+-   `types/`: This directory defines the data types used throughout the application:
+    -   `types/command.types.ts`: Defines types related to rover commands.
+    -   `types/plateau.types.ts`: Defines the `Plateau` interface.
+    -   `types/parser.types.ts`: Defines types related to parsing operations.
+    -   `types/rover.types.ts`: Defines the `Rover` interface and related types.
 -   `example.ts`: This file contains example usage of the functions in the application.
 
 ## Functional Paradigm and State Machines
