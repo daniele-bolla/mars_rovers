@@ -1,16 +1,12 @@
 import { parseRoverWithErrors } from "../parser";
-import {
-  executeCommandsWithErrors,
-  isValidPosition,
-  roverToString,
-} from "../rover";
-import { Plateau } from "../types";
+import { executeCommandsWithErrors, isValidPosition, roverToString } from "../rover";
+import { Plateau, ProcessRoverResult } from "../types";
 
 export const processRoverWithErrors = (
   roverLine: string,
   commandLine: string,
   plateau: Plateau
-): { output: string; errors: string[] } => {
+): ProcessRoverResult => {
   const parseResult = parseRoverWithErrors(roverLine);
 
   if (!parseResult.success) {

@@ -3,18 +3,10 @@ import {
   parseRoverWithThrowErrors,
 } from "../parser";
 import { processRoverWithErrors } from "./rover.process";
-import { Plateau, Rover } from "../types";
+import { Rover, ProcessInputResult } from "../types";
 import { executeCommands } from "../rover";
 
-export const processInputWithErrors = (
-  input: string
-): {
-  results: string[];
-  errors: Array<{ rover: number; errors: string[] }>;
-  initialRovers: Rover[];
-  finalRovers: Rover[];
-  plateau: Plateau;
-} => {
+export const processInputWithErrors = (input: string): ProcessInputResult => {
   const lines = input.trim().split("\n");
   const plateau = parsePlateauWithThrowErrors(lines[0]);
 
