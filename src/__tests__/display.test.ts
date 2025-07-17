@@ -26,8 +26,8 @@ describe("showGrid", () => {
 
     expect(mockConsoleLog).toHaveBeenCalledWith("\nPlateau:");
     expect(mockConsoleLog).toHaveBeenCalledWith(" .  .  .  .  .  . ");
-    expect(mockConsoleLog).toHaveBeenCalledWith(" .  .  . [E] .  . ");
-    expect(mockConsoleLog).toHaveBeenCalledWith(" . [N] .  .  .  . ");
+    expect(mockConsoleLog).toHaveBeenCalledWith(" .  .  . [→] .  . ");
+    expect(mockConsoleLog).toHaveBeenCalledWith(" . [↑] .  .  .  . ");
     expect(mockConsoleLog).toHaveBeenCalledWith(" .  .  .  .  .  . ");
     expect(mockConsoleLog).toHaveBeenCalledWith(" .  .  .  .  .  . ");
     expect(mockConsoleLog).toHaveBeenCalledWith("");

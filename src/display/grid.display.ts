@@ -1,5 +1,18 @@
 import { Plateau, Rover } from "../types";
-
+function directionToArrow(direction: string): string {
+  switch (direction) {
+    case "N":
+      return "↑";
+    case "E":
+      return "→";
+    case "S":
+      return "↓";
+    case "W":
+      return "←";
+    default:
+      return "?"; // Unknown direction
+  }
+}
 export function showGrid(plateau: Plateau, rovers: Rover[]) {
   console.log("\nPlateau:");
 
@@ -10,7 +23,7 @@ export function showGrid(plateau: Plateau, rovers: Rover[]) {
         (r) => r.position.x === x && r.position.y === y
       );
       if (rover) {
-        row += `[${rover.direction}]`;
+        row += `[${directionToArrow(rover.direction)}]`;
       } else {
         row += " . ";
       }
