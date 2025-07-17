@@ -1,11 +1,8 @@
 import {
   Direction,
-  Command,
   Position,
-  Rover,
   Plateau,
   DIRECTIONS,
-  isCommand,
 } from "../types";
 
 export const turnLeft = (direction: Direction): Direction => {

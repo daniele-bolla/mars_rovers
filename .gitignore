@@ -11,5 +11,4 @@ npm-debug.log*
 # IDEs and editors
 .vscode/
 
-# Husky
-.husky
+
