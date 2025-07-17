@@ -3,7 +3,7 @@ import {
   parseRoverWithThrowErrors,
 } from "../parser";
 import { processRoverWithErrors } from "./rover.process";
-import { Rover } from "../types";
+import { Plateau, Rover } from "../types";
 import { executeCommands } from "../rover";
 
 export const processInputWithErrors = (

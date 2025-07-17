@@ -1,5 +1,4 @@
 import { processInputWithErrors } from "../process";
-import { parsePlateauWithThrowErrors } from "../parser";
 import { Rover, Plateau } from "../types";
 
 export async function runMarsRoverApp(
@@ -7,7 +6,8 @@ export async function runMarsRoverApp(
   displayGrid: (plateau: Plateau, rovers: Rover[]) => void
 ) {
   try {
-    const { results, errors, finalRovers, initialRovers, plateau } = processInputWithErrors(input);
+    const { results, errors, finalRovers, initialRovers, plateau } =
+      processInputWithErrors(input);
 
     // Show initial state
     console.log("\nInitial State:");
