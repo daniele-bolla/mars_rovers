@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { runMarsRoverApp } from '../app/mars-rover-app';
+import { runMarsRoverApp } from "../app/mars-rover-app";
 
 // Mock console.log to capture output
 const mockConsoleLog = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -29,19 +29,19 @@ MMRMMRMRRM`;
     expect(mockConsoleLog).toHaveBeenCalledWith("Rover 2: 5 1 E");
   });
 
-  it("should handle errors gracefully", async () => {
-    const invalidInput = `5 5
-1 2 X
-LMLMLMLMM`; // Invalid rover direction
+  it("should handle invalid commands and display errors", async () => {
+    const input = `5 5
+1 2 N
+LMLMLMLMMX`; // Invalid command 'X'
 
     const mockDisplayGrid = vi.fn();
 
-    await runMarsRoverApp(invalidInput, mockDisplayGrid);
+    await runMarsRoverApp(input, mockDisplayGrid);
 
+    expect(mockConsoleLog).toHaveBeenCalledWith("\nErrors:");
+    expect(mockConsoleLog).toHaveBeenCalledWith("Rover 1:");
     expect(mockConsoleLog).toHaveBeenCalledWith(
-      "Error:",
-      "Invalid direction: X, direction must be any of N, E, S, W"
+      "  - Invalid command 'X' at position 9, skipping."
     );
-    expect(mockDisplayGrid).not.toHaveBeenCalled();
   });
 });

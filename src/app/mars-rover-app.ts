@@ -1,4 +1,4 @@
-import { processInput } from "../process";
+import { processInputWithErrors } from "../process";
 import {
   parsePlateauWithThrowErrors,
   parseRoverWithThrowErrors,
@@ -24,7 +24,7 @@ export async function runMarsRoverApp(
     displayGrid(plateau, initialRovers);
 
     // Process commands
-    const results = processInput(input);
+    const { results, errors } = processInputWithErrors(input);
 
     // Show final state
     console.log("Final State:");
@@ -42,6 +42,15 @@ export async function runMarsRoverApp(
     results.forEach((result, index) => {
       console.log(`Rover ${index + 1}: ${result}`);
     });
+
+    // Show errors
+    if (errors.length > 0) {
+      console.log("\nErrors:");
+      errors.forEach(({ rover, errors }) => {
+        console.log(`Rover ${rover}:`);
+        errors.forEach((error) => console.log(`  - ${error}`));
+      });
+    }
   } catch (error) {
     if (error instanceof Error) {
       console.log("Error:", error.message);

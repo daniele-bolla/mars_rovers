@@ -66,7 +66,7 @@ export const executeCommandsSafe = (
     if (isCommand(char)) {
       return executeCommand(currentRover, char, plateau);
     } else {
-      errors.push(`Invalid command '${char}' at position ${index}`);
+      errors.push(`Invalid command '${char}' at position ${index}, skipping.`);
       return currentRover;
     }
   }, rover);
