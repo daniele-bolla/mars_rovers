@@ -12,7 +12,9 @@ export const executeCommand = (
   command: Command,
   plateau: Plateau
 ): { rover: Rover; success: boolean; message?: string } => {
-  return switchCases(
+  type ExecuteCommandResult = { rover: Rover; success: boolean; message?: string };
+
+  return switchCases<Command, ExecuteCommandResult>(
     command,
     {
       L: () => ({
