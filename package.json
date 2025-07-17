@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "ISC",
   "author": "",
-  "type": "module",
+  "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsx src/index.ts",
