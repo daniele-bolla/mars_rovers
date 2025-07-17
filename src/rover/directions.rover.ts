@@ -4,6 +4,7 @@ import {
   Plateau,
   DIRECTIONS,
 } from "../types";
+import { switchCases } from "../utils/switchCases";
 
 export const turnLeft = (direction: Direction): Direction => {
   const index = DIRECTIONS.indexOf(direction);
@@ -16,16 +17,18 @@ export const turnRight = (direction: Direction): Direction => {
 };
 
 export const getMoveDelta = (direction: Direction): Position => {
-  switch (direction) {
-    case "N":
-      return { x: 0, y: 1 };
-    case "E":
-      return { x: 1, y: 0 };
-    case "S":
-      return { x: 0, y: -1 };
-    case "W":
-      return { x: -1, y: 0 };
-  }
+  return switchCases(
+    direction,
+    {
+      N: () => ({ x: 0, y: 1 }),
+      E: () => ({ x: 1, y: 0 }),
+      S: () => ({ x: 0, y: -1 }),
+      W: () => ({ x: -1, y: 0 }),
+    },
+    () => {
+      throw new Error(`Unknown direction: ${direction}`);
+    }
+  );
 };
 
 export const isValidPosition = (

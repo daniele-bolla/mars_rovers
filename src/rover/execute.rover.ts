@@ -5,54 +5,59 @@ import {
   turnLeft,
   turnRight,
 } from "./directions.rover";
+import { switchCases } from "../utils/switchCases";
 
 export const executeCommand = (
   rover: Rover,
   command: Command,
   plateau: Plateau
 ): { rover: Rover; success: boolean; message?: string } => {
-  switch (command) {
-    case "L":
-      return {
+  return switchCases(
+    command,
+    {
+      L: () => ({
         rover: {
           ...rover,
           direction: turnLeft(rover.direction),
         },
         success: true,
-      };
-
-    case "R":
-      return {
+      }),
+      R: () => ({
         rover: {
           ...rover,
           direction: turnRight(rover.direction),
         },
         success: true,
-      };
-
-    case "M": {
-      const delta = getMoveDelta(rover.direction);
-      const newPosition: Position = {
-        x: rover.position.x + delta.x,
-        y: rover.position.y + delta.y,
-      };
-
-      if (isValidPosition(newPosition, plateau)) {
-        return {
-          rover: {
-            ...rover,
-            position: newPosition,
-          },
-          success: true,
+      }),
+      M: () => {
+        const delta = getMoveDelta(rover.direction);
+        const newPosition: Position = {
+          x: rover.position.x + delta.x,
+          y: rover.position.y + delta.y,
         };
-      }
-      return {
-        rover: rover,
-        success: false,
-        message: `Move to (${newPosition.x},${newPosition.y}) is out of bounds or invalid. Rover remains at (${rover.position.x},${rover.position.y}).`,
-      };
-    }
-  }
+
+        if (isValidPosition(newPosition, plateau)) {
+          return {
+            rover: {
+              ...rover,
+              position: newPosition,
+            },
+            success: true,
+          };
+        }
+        return {
+          rover: rover,
+          success: false,
+          message: `Move to (${newPosition.x},${newPosition.y}) is out of bounds or invalid. Rover remains at (${rover.position.x},${rover.position.y}).`,
+        };
+      },
+    },
+    () => ({
+      rover: rover,
+      success: false,
+      message: `Unknown command: ${command}`,
+    })
+  );
 };
 
 export const executeCommands = (

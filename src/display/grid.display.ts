@@ -1,17 +1,17 @@
 import { Plateau, Rover } from "../types";
+import { switchCases } from "../utils/switchCases";
+
 function directionToArrow(direction: string): string {
-  switch (direction) {
-    case "N":
-      return "↑";
-    case "E":
-      return "→";
-    case "S":
-      return "↓";
-    case "W":
-      return "←";
-    default:
-      return "?"; // Unknown direction
-  }
+  return switchCases(
+    direction,
+    {
+      N: () => "↑",
+      E: () => "→",
+      S: () => "↓",
+      W: () => "←",
+    },
+    () => "?" // Unknown direction
+  );
 }
 export function showGrid(plateau: Plateau, rovers: Rover[]) {
   console.log("\nPlateau:");
