@@ -11,6 +11,7 @@ The codebase is written in TypeScript and follows a functional programming parad
 -   `display/grid.display.ts`: Provides utility functions for displaying the rover grid.
 -   `process/input.process.ts`: This file contains the core logic for processing the input and returning the final rover positions.
 -   `process/rover.process.ts`: This file handles the processing of individual rovers.
+    The unit tests for the core application logic are located in `src/__tests__/process.test.ts`.
 -   `rover/`: This directory contains files related to rover operations:
     -   `rover/directions.rover.ts`: Handles rover direction changes (turning left/right).
     -   `rover/execute.rover.ts`: Contains functions for executing individual commands and sequences of commands.
