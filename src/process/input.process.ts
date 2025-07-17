@@ -1,22 +1,27 @@
-import { parsePlateauWithThrowErrors } from "../parser";
+import {
+  parsePlateauWithThrowErrors,
+  parseRoverWithThrowErrors,
+} from "../parser";
 import { processRoverWithErrors } from "./rover.process";
+import { Rover } from "../types";
+import { executeCommands } from "../rover";
 
 export const processInputWithErrors = (
   input: string
 ): {
   results: string[];
   errors: Array<{ rover: number; errors: string[] }>;
+  initialRovers: Rover[];
+  finalRovers: Rover[];
+  plateau: Plateau;
 } => {
   const lines = input.trim().split("\n");
   const plateau = parsePlateauWithThrowErrors(lines[0]);
 
-  const initialAccumulator: {
-    results: string[];
-    errors: Array<{ rover: number; errors: string[] }>;
-  } = {
-    results: [],
-    errors: [],
-  };
+  const initialRovers: Rover[] = [];
+  const finalRovers: Rover[] = [];
+  const results: string[] = [];
+  const errors: Array<{ rover: number; errors: string[] }> = [];
 
   // Group lines into rover-command pairs
   const roverCommandPairs = lines
@@ -31,26 +36,28 @@ export const processInputWithErrors = (
       return pairs;
     }, []);
 
-  // Process each pair and accumulate results and errors
-  const finalState = roverCommandPairs.reduce(
-    (acc, [roverLine, commandLine], index) => {
-      const roverNumber = index + 1; // Rovers are 1-indexed
-      const { output, errors } = processRoverWithErrors(
-        roverLine,
-        commandLine,
-        plateau
-      );
+  roverCommandPairs.forEach(([roverLine, commandLine], index) => {
+    const roverNumber = index + 1; // Rovers are 1-indexed
 
-      acc.results.push(output);
+    const initialRover = parseRoverWithThrowErrors(roverLine);
+    initialRovers.push(initialRover);
 
-      if (errors.length > 0) {
-        acc.errors.push({ rover: roverNumber, errors });
-      }
+    const { output, errors: roverErrors } = processRoverWithErrors(
+      roverLine,
+      commandLine,
+      plateau
+    );
 
-      return acc;
-    },
-    initialAccumulator
-  );
+    results.push(output);
 
-  return finalState;
+    if (roverErrors.length > 0) {
+      errors.push({ rover: roverNumber, errors: roverErrors });
+    }
+
+    // Calculate final rover state for display
+    const finalRover = executeCommands(initialRover, commandLine, plateau);
+    finalRovers.push(finalRover);
+  });
+
+  return { results, errors, initialRovers, finalRovers, plateau };
 };

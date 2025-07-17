@@ -1,9 +1,5 @@
 import { processInputWithErrors } from "../process";
-import {
-  parsePlateauWithThrowErrors,
-  parseRoverWithThrowErrors,
-} from "../parser";
-import { executeCommands } from "../rover";
+import { parsePlateauWithThrowErrors } from "../parser";
 import { Rover, Plateau } from "../types";
 
 export async function runMarsRoverApp(
@@ -11,30 +7,14 @@ export async function runMarsRoverApp(
   displayGrid: (plateau: Plateau, rovers: Rover[]) => void
 ) {
   try {
-    const lines = input.trim().split("\n");
-    const plateau = parsePlateauWithThrowErrors(lines[0]);
+    const { results, errors, finalRovers, initialRovers, plateau } = processInputWithErrors(input);
 
     // Show initial state
     console.log("\nInitial State:");
-    const initialRovers: Rover[] = [];
-    for (let i = 1; i < lines.length; i += 2) {
-      const rover = parseRoverWithThrowErrors(lines[i]);
-      initialRovers.push(rover);
-    }
     displayGrid(plateau, initialRovers);
-
-    // Process commands
-    const { results, errors } = processInputWithErrors(input);
 
     // Show final state
     console.log("Final State:");
-    const finalRovers: Rover[] = [];
-    for (let i = 1; i < lines.length; i += 2) {
-      const rover = parseRoverWithThrowErrors(lines[i]);
-      const commands = lines[i + 1];
-      const finalRover = executeCommands(rover, commands, plateau);
-      finalRovers.push(finalRover);
-    }
     displayGrid(plateau, finalRovers);
 
     // Show results

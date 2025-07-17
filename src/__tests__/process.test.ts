@@ -7,15 +7,23 @@ describe("process", () => {
     const expectedOutput = {
       results: ["1 3 N"],
       errors: [],
+      initialRovers: [{ position: { x: 1, y: 2 }, direction: 'N' }],
+      finalRovers: [{ position: { x: 1, y: 3 }, direction: 'N' }],
+      plateau: { width: 5, height: 5 },
     };
     const result = processInputWithErrors(input);
     expect(result).toEqual(expectedOutput);
   });
   it("processInput should correctly process a input string, other example", () => {
-    const input = `3 3\n1 1 E\nMRM`;
+    const input = `3 3
+1 1 E
+MRM`;
     const expectedOutput = {
       results: ["2 0 S"],
       errors: [],
+      initialRovers: [{ position: { x: 1, y: 1 }, direction: 'E' }],
+      finalRovers: [{ position: { x: 2, y: 0 }, direction: 'S' }],
+      plateau: { width: 3, height: 3 },
     };
     const result = processInputWithErrors(input);
     expect(result).toEqual(expectedOutput);
@@ -49,7 +57,7 @@ describe("process", () => {
 
   it("processInputWithErrors should report errors for out-of-bounds initial rover position", () => {
     const input = `5 5\n6 2 N\nM`; // Rover starts out of bounds
-    const { results, errors } = processInputWithErrors(input);
+    const { results, errors, initialRovers, finalRovers, plateau } = processInputWithErrors(input);
     expect(results).toEqual(["6 2 N"]);
     expect(errors).toEqual([
       {
@@ -59,5 +67,8 @@ describe("process", () => {
         ],
       },
     ]);
+    expect(initialRovers).toEqual([{ position: { x: 6, y: 2 }, direction: 'N' }]);
+    expect(finalRovers).toEqual([{ position: { x: 6, y: 2 }, direction: 'N' }]);
+    expect(plateau).toEqual({ width: 5, height: 5 });
   });
 });
