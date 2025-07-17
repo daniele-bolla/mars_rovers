@@ -50,4 +50,12 @@ describe('parser', () => {
       expect(result.error).toBe('Plateau dimensions cannot exceed 100');
     }
   });
+
+  it('parseRover should return error for negative coordinates', () => {
+    const result = parseRover('-1 2 N');
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error).toBe('Rover position coordinates must be non-negative');
+    }
+  });
 });

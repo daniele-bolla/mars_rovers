@@ -12,7 +12,11 @@ export const executeCommand = (
   command: Command,
   plateau: Plateau
 ): { rover: Rover; success: boolean; message?: string } => {
-  type ExecuteCommandResult = { rover: Rover; success: boolean; message?: string };
+  type ExecuteCommandResult = {
+    rover: Rover;
+    success: boolean;
+    message?: string;
+  };
 
   return switchCases<Command, ExecuteCommandResult>(
     command,
@@ -81,7 +85,6 @@ export const executeCommandsSafe = (
   plateau: Plateau
 ): { rover: Rover; errors: string[] } => {
   const errors: string[] = [];
-  let lastErrorMessage: string | undefined = undefined;
 
   const finalRover = commands.split("").reduce((currentRover, char, index) => {
     if (isCommand(char)) {
@@ -91,17 +94,15 @@ export const executeCommandsSafe = (
         message,
       } = executeCommand(currentRover, char, plateau);
       if (!success && message) {
-        if (message !== lastErrorMessage) {
+        const isErrorsEmpty = errors.length === 0;
+        const isMessageNotInErrors = errors[errors.length - 1] !== message;
+        if (isErrorsEmpty || isMessageNotInErrors) {
           errors.push(message);
-          lastErrorMessage = message;
         }
-      } else {
-        lastErrorMessage = undefined; // Reset if move was successful
       }
       return newRover;
     } else {
       errors.push(`Invalid command '${char}' at position ${index}, skipping.`);
-      lastErrorMessage = undefined; // Reset for invalid command type
       return currentRover;
     }
   }, rover);

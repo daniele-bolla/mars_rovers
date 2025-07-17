@@ -19,6 +19,13 @@ export const parseRover = (input: string): ParseResult<Rover> => {
     return { success: false, error: "Rover position must be numbers" };
   }
 
+  if (x < 0 || y < 0) {
+    return {
+      success: false,
+      error: "Rover position coordinates must be non-negative",
+    };
+  }
+
   if (!isDirection(direction)) {
     return {
       success: false,
