@@ -79,7 +79,7 @@ export const executeCommands = (
   }, rover);
 };
 
-export const executeCommandsSafe = (
+export const executeCommandsWithErrors = (
   rover: Rover,
   commands: string,
   plateau: Plateau

@@ -1,6 +1,6 @@
 import { DIRECTIONS, Rover, isDirection, ParseResult } from "../types";
 // Parse rover from string "1 2 N"
-export const parseRover = (input: string): ParseResult<Rover> => {
+export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
   const parts = input.trim().split(" ");
 
   if (parts.length !== 3) {
@@ -43,7 +43,7 @@ export const parseRover = (input: string): ParseResult<Rover> => {
 };
 
 export const parseRoverWithThrowErrors = (input: string): Rover => {
-  const result = parseRover(input);
+  const result = parseRoverWithErrors(input);
   if (!result.success) throw new Error(result.error);
   return result.value;
 };

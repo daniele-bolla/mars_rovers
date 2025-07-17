@@ -1,5 +1,5 @@
 import { parsePlateauWithThrowErrors } from "../parser";
-import { processRoverSafe } from "./rover.process";
+import { processRoverWithErrors } from "./rover.process";
 
 export const processInputWithErrors = (
   input: string
@@ -35,7 +35,7 @@ export const processInputWithErrors = (
   const finalState = roverCommandPairs.reduce(
     (acc, [roverLine, commandLine], index) => {
       const roverNumber = index + 1; // Rovers are 1-indexed
-      const { output, errors } = processRoverSafe(
+      const { output, errors } = processRoverWithErrors(
         roverLine,
         commandLine,
         plateau

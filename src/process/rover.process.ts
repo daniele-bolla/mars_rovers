@@ -1,13 +1,17 @@
-import { parseRover } from "../parser";
-import { executeCommandsSafe, isValidPosition, roverToString } from "../rover";
+import { parseRoverWithErrors } from "../parser";
+import {
+  executeCommandsWithErrors,
+  isValidPosition,
+  roverToString,
+} from "../rover";
 import { Plateau } from "../types";
 
-export const processRoverSafe = (
+export const processRoverWithErrors = (
   roverLine: string,
   commandLine: string,
   plateau: Plateau
 ): { output: string; errors: string[] } => {
-  const parseResult = parseRover(roverLine);
+  const parseResult = parseRoverWithErrors(roverLine);
 
   if (!parseResult.success) {
     return {
@@ -28,7 +32,7 @@ export const processRoverSafe = (
     };
   }
 
-  const { rover: finalRover, errors } = executeCommandsSafe(
+  const { rover: finalRover, errors } = executeCommandsWithErrors(
     initialRover,
     commandLine,
     plateau
