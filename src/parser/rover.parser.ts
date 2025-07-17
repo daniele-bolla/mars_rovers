@@ -1,4 +1,4 @@
-import { DIRECTIONS, Plateau, Rover, isDirection, ParseResult } from "../types";
+import { DIRECTIONS, Rover, isDirection, ParseResult } from "../types";
 // Parse rover from string "1 2 N"
 export const parseRover = (input: string): ParseResult<Rover> => {
   const parts = input.trim().split(" ");

@@ -1,11 +1,6 @@
-import * as readline from "readline";
-import { processInput } from "./process";
-import {
-  parsePlateauWithThrowErrors,
-  parseRoverWithThrowErrors,
-} from "./parser";
-import { executeCommands } from "./rover";
 import { Rover, Plateau } from "./types";
+import { MainAppDependencies } from "./types/parser.types";
+import * as readline from "readline";
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -33,7 +28,7 @@ function showGrid(plateau: Plateau, rovers: Rover[]) {
   console.log("");
 }
 
-async function main() {
+async function main(dependencies: MainAppDependencies) {
   console.log("Mars Rover Control\n");
 
   // Get input
@@ -64,27 +59,41 @@ async function main() {
 
   try {
     const lines = input.trim().split("\n");
-    const plateau = parsePlateauWithThrowErrors(lines[0]);
+    const plateau = dependencies.plateauParser.parsePlateauWithThrowErrors(
+      lines[0]
+    );
 
     // Show initial state
     console.log("\nInitial State:");
     const initialRovers: Rover[] = [];
     for (let i = 1; i < lines.length; i += 2) {
-      const rover = parseRoverWithThrowErrors(lines[i]);
+      const rover = dependencies.roverParser.parseRoverWithThrowErrors(
+        lines[i]
+      );
       initialRovers.push(rover);
     }
     showGrid(plateau, initialRovers);
 
     // Process commands
-    const results = processInput(input);
+    const results = dependencies.inputProcessor.processInput(
+      input,
+      dependencies.plateauParser,
+      dependencies.roverParser
+    );
 
     // Show final state
     console.log("Final State:");
     const finalRovers: Rover[] = [];
     for (let i = 1; i < lines.length; i += 2) {
-      const rover = parseRoverWithThrowErrors(lines[i]);
+      const rover = dependencies.roverParser.parseRoverWithThrowErrors(
+        lines[i]
+      );
       const commands = lines[i + 1];
-      const finalRover = executeCommands(rover, commands, plateau);
+      const finalRover = dependencies.commandExecutorSimple.executeCommands(
+        rover,
+        commands,
+        plateau
+      );
       finalRovers.push(finalRover);
     }
     showGrid(plateau, finalRovers);
@@ -105,4 +114,14 @@ async function main() {
   rl.close();
 }
 
-main();
+import { processInput } from "./process/input.process";
+import { parsePlateauWithThrowErrors } from "./parser/plateau.parser";
+import { parseRoverWithThrowErrors } from "./parser/rover.parser";
+import { executeCommands } from "./rover/execute.rover";
+
+main({
+  inputProcessor: { processInput },
+  plateauParser: { parsePlateauWithThrowErrors },
+  roverParser: { parseRoverWithThrowErrors },
+  commandExecutorSimple: { executeCommands },
+});

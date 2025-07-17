@@ -1,11 +1,17 @@
-import { parsePlateauWithThrowErrors } from "../parser";
+import { PlateauParser, RoverParser } from "../types/parser.types";
 import { processRoverSafe } from "./rover.process";
+import { executeCommandsSafe } from "../rover/execute.rover";
+import { Rover } from "../types";
 
-export const processInput = (input: string): string[] => {
+export const processInput = (
+  input: string,
+  plateauParser: PlateauParser,
+  roverParser: RoverParser
+): string[] => {
   const lines = input.trim().split("\n");
 
   // First line is plateau
-  const plateau = parsePlateauWithThrowErrors(lines[0]);
+  const plateau = plateauParser.parsePlateauWithThrowErrors(lines[0]);
 
   // Process each rover (every 2 lines after plateau)
   const results: string[] = [];
@@ -14,7 +20,19 @@ export const processInput = (input: string): string[] => {
     const roverLine = lines[i];
     const commandLine = lines[i + 1];
 
-    const result = processRoverSafe(roverLine, commandLine, plateau).output;
+    const defaultCommandExecutor = { executeCommandsSafe };
+    const defaultRoverStringifier = {
+      roverToString: (rover: Rover) => String(rover),
+    };
+
+    const result = processRoverSafe(
+      roverLine,
+      commandLine,
+      plateau,
+      roverParser,
+      defaultCommandExecutor,
+      defaultRoverStringifier
+    ).output;
     results.push(result);
   }
 
@@ -22,13 +40,15 @@ export const processInput = (input: string): string[] => {
 };
 
 export const processInputWithErrors = (
-  input: string
+  input: string,
+  plateauParser: PlateauParser,
+  roverParser: RoverParser
 ): {
   results: string[];
   errors: Array<{ rover: number; errors: string[] }>;
 } => {
   const lines = input.trim().split("\n");
-  const plateau = parsePlateauWithThrowErrors(lines[0]);
+  const plateau = plateauParser.parsePlateauWithThrowErrors(lines[0]);
 
   const results: string[] = [];
   const allErrors: Array<{ rover: number; errors: string[] }> = [];
@@ -38,11 +58,17 @@ export const processInputWithErrors = (
     roverNumber++;
     const roverLine = lines[i];
     const commandLine = lines[i + 1];
-
+    const defaultCommandExecutor = { executeCommandsSafe };
+    const defaultRoverStringifier = {
+      roverToString: (rover: Rover) => String(rover),
+    };
     const { output, errors } = processRoverSafe(
       roverLine,
       commandLine,
-      plateau
+      plateau,
+      roverParser,
+      defaultCommandExecutor,
+      defaultRoverStringifier
     );
     results.push(output);
 

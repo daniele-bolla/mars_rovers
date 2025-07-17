@@ -1,4 +1,11 @@
-import { Command, isCommand, Plateau, Position, Rover } from "../types";
+import {
+  Command,
+  isCommand,
+  Plateau,
+  Position,
+  Rover,
+  TurningLogic,
+} from "../types";
 import {
   getMoveDelta,
   isValidPosition,
@@ -6,22 +13,28 @@ import {
   turnRight,
 } from "./directions.rover";
 
+const defaultTurningLogic: TurningLogic = {
+  turnLeft: turnLeft,
+  turnRight: turnRight,
+};
+
 export const executeCommand = (
   rover: Rover,
   command: Command,
-  plateau: Plateau
+  plateau: Plateau,
+  turningLogic: TurningLogic
 ): Rover => {
   switch (command) {
     case "L":
       return {
         ...rover,
-        direction: turnLeft(rover.direction),
+        direction: turningLogic.turnLeft(rover.direction),
       };
 
     case "R":
       return {
         ...rover,
-        direction: turnRight(rover.direction),
+        direction: turningLogic.turnRight(rover.direction),
       };
 
     case "M": {
@@ -50,7 +63,8 @@ export const executeCommands = (
   const commandArray = commands.split("").filter(isCommand); // This acts as a guard for type safety, returning only valid commands
 
   return commandArray.reduce(
-    (currentRover, command) => executeCommand(currentRover, command, plateau),
+    (currentRover, command) =>
+      executeCommand(currentRover, command, plateau, defaultTurningLogic),
     rover
   );
 };
@@ -64,7 +78,7 @@ export const executeCommandsSafe = (
 
   const finalRover = commands.split("").reduce((currentRover, char, index) => {
     if (isCommand(char)) {
-      return executeCommand(currentRover, char, plateau);
+      return executeCommand(currentRover, char, plateau, defaultTurningLogic);
     } else {
       errors.push(`Invalid command '${char}' at position ${index}`);
       return currentRover;

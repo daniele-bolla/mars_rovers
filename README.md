@@ -6,11 +6,12 @@ This project is an implementation of the Mars Rover technical challenge. The goa
 
 The codebase is written in TypeScript and follows a functional programming paradigm. The code is split into several files, each with a specific responsibility:
 
--   `index.ts`: This is the main entry point of the application. It handles user input and output, and orchestrates the overall flow of the program.
--   `process/input.process.ts`: This file contains the core logic for processing the input and returning the final rover positions.
+-   `index.ts`: This is the main entry point of the application. It now uses **Dependency Injection** to receive its core processing logic and individual parsing/execution functions, making it more flexible and testable.
+-   `process/input.process.ts`: This file contains the core logic for processing the input and returning the final rover positions. It now uses **Dependency Injection** for its parsing logic, making it more flexible and testable.
+-   `process/rover.process.ts`: This file handles the processing of individual rovers, and now also uses **Dependency Injection** for its command execution and rover stringification logic.
 -   `rover/`: This directory contains files related to rover operations:
     -   `rover/directions.rover.ts`: Handles rover direction changes (turning left/right).
-    -   `rover/execute.rover.ts`: Contains functions for executing individual commands and sequences of commands.
+    -   `rover/execute.rover.ts`: Contains functions for executing individual commands and sequences of commands. This module now uses **Dependency Injection** for its turning logic, making it more flexible and testable.
     -   `rover/tostring.rover.ts`: Provides a utility function to convert a rover object to its string representation.
 -   `parser/`: This directory contains files responsible for parsing input strings:
     -   `parser/plateau.parser.ts`: Parses the plateau dimensions from a string.
@@ -18,8 +19,8 @@ The codebase is written in TypeScript and follows a functional programming parad
 -   `types/`: This directory defines the data types used throughout the application:
     -   `types/command.types.ts`: Defines types related to rover commands.
     -   `types/plateau.types.ts`: Defines the `Plateau` interface.
-    -   `types/parser.types.ts`: Defines types related to parsing operations.
-    -   `types/rover.types.ts`: Defines the `Rover` interface and related types.
+    -   `types/parser.types.ts`: Defines types related to parsing operations, including the `RoverParser`, `PlateauParser`, `InputProcessor`, `CommandExecutorSimple`, and `MainAppDependencies` interfaces.
+    -   `types/rover.types.ts`: Defines the `Rover` interface, `TurningLogic` interface, `CommandExecutor` interface, `RoverStringifier` interface, and related types.
 -   `example.ts`: This file contains example usage of the functions in the application.
 
 ## Functional Paradigm and State Machines
