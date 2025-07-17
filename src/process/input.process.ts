@@ -1,26 +1,6 @@
 import { parsePlateauWithThrowErrors } from "../parser";
 import { processRoverSafe } from "./rover.process";
 
-export const processInput = (input: string): string[] => {
-  const lines = input.trim().split("\n");
-
-  // First line is plateau
-  const plateau = parsePlateauWithThrowErrors(lines[0]);
-
-  // Process each rover (every 2 lines after plateau)
-  const results: string[] = [];
-
-  for (let i = 1; i < lines.length; i += 2) {
-    const roverLine = lines[i];
-    const commandLine = lines[i + 1];
-
-    const result = processRoverSafe(roverLine, commandLine, plateau).output;
-    results.push(result);
-  }
-
-  return results;
-};
-
 export const processInputWithErrors = (
   input: string
 ): {
