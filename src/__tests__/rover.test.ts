@@ -24,13 +24,20 @@ describe("rover", () => {
   it("executeCommand should move rover forward correctly", () => {
     const rover: Rover = { position: { x: 1, y: 2 }, direction: "N" };
     const newRover = executeCommand(rover, "M", plateau);
-    expect(newRover).toEqual({ position: { x: 1, y: 3 }, direction: "N" });
+    expect(newRover).toEqual({
+      rover: { position: { x: 1, y: 3 }, direction: "N" },
+      success: true,
+    });
   });
 
   it("executeCommand should not move rover off plateau", () => {
     const rover: Rover = { position: { x: 5, y: 5 }, direction: "N" };
     const newRover = executeCommand(rover, "M", plateau);
-    expect(newRover).toEqual({ position: { x: 5, y: 5 }, direction: "N" });
+    expect(newRover).toEqual({
+      rover: { position: { x: 5, y: 5 }, direction: "N" },
+      success: false,
+      message: "Move to (5,6) is out of bounds or invalid. Rover remains at (5,5).",
+    });
   });
 
   it("executeCommands should execute a sequence of commands", () => {

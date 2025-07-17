@@ -32,4 +32,18 @@ describe("process", () => {
       },
     ]);
   });
+
+  it("processInputWithErrors should report errors for out-of-bounds moves", () => {
+    const input = `5 5\n1 2 N\nMMMMMM`; // Rover tries to move beyond the plateau
+    const { results, errors } = processInputWithErrors(input);
+    expect(results).toEqual(["1 5 N"]); // Rover should stop at the boundary
+    expect(errors).toEqual([
+      {
+        rover: 1,
+        errors: [
+          "Move to (1,6) is out of bounds or invalid. Rover remains at (1,5).",
+        ],
+      },
+    ]);
+  });
 });
