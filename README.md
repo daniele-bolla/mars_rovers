@@ -6,8 +6,11 @@ This project is an implementation of the Mars Rover technical challenge. The goa
 
 The codebase is written in TypeScript and follows a functional programming paradigm. The code is split into several files, each with a specific responsibility:
 
--   `index.ts`: This is the main entry point of the application. It handles user input and output, and orchestrates the overall flow of the program.
+-   `index.ts`: This is the main entry point of the application. It primarily handles user input/output via `readline` and orchestrates the call to `runMarsRoverApp`.
+-   `app/mars-rover-app.ts`: Contains the core application logic in the `runMarsRoverApp` function, making it highly testable by separating it from direct I/O.
+-   `display/grid.display.ts`: Provides utility functions for displaying the rover grid.
 -   `process/input.process.ts`: This file contains the core logic for processing the input and returning the final rover positions.
+-   `process/rover.process.ts`: This file handles the processing of individual rovers.
 -   `rover/`: This directory contains files related to rover operations:
     -   `rover/directions.rover.ts`: Handles rover direction changes (turning left/right).
     -   `rover/execute.rover.ts`: Contains functions for executing individual commands and sequences of commands.
@@ -15,12 +18,7 @@ The codebase is written in TypeScript and follows a functional programming parad
 -   `parser/`: This directory contains files responsible for parsing input strings:
     -   `parser/plateau.parser.ts`: Parses the plateau dimensions from a string.
     -   `parser/rover.parser.ts`: Parses the rover's initial position and direction from a string.
--   `types/`: This directory defines the data types used throughout the application:
-    -   `types/command.types.ts`: Defines types related to rover commands.
-    -   `types/plateau.types.ts`: Defines the `Plateau` interface.
-    -   `types/parser.types.ts`: Defines types related to parsing operations.
-    -   `types/rover.types.ts`: Defines the `Rover` interface and related types.
--   `example.ts`: This file contains example usage of the functions in the application.
+-   `types/`: This directory defines the data types used throughout the application.
 
 ## Functional Paradigm and State Machines
 
@@ -60,4 +58,4 @@ To run the tests, you can use the following command:
 npm test
 ```
 
-This will run all the tests in the `src/__tests__` directory.
+This will run all the tests in the `src/__tests__` directory. The unit tests have been updated to be more comprehensive and cover various aspects of the application's logic.
