@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { processInputWithErrors } from "../process/input.process";
 import { OutOfBoundsError, CollisionError } from "../types";
+import {
+  commandErrorMessages,
+  outOfBoundsErrorMessages,
+} from "../utils/errorMessages";
 
 describe("process", () => {
   it("processInput should correctly process a simple input string", () => {
@@ -33,7 +37,7 @@ describe("process", () => {
     const { results, errors } = processInputWithErrors(input);
     expect(results).toEqual(["1 3 N"]);
     expect(errors[0].message).toBe(
-      "Invalid Command Error: Invalid command 'X' at position 9, skipping."
+      `Invalid Command Error: ${commandErrorMessages.invalidCommand("X", 9)}`
     );
   });
 
@@ -42,7 +46,7 @@ describe("process", () => {
     const { results, errors } = processInputWithErrors(input);
     expect(results).toEqual(["1 5 N"]); // Rover should stop at the boundary
     expect(errors[0].message).toBe(
-      "Out of Bounds Error: Move to (1,6) is out of bounds or invalid. Rover remains at (1,5)."
+      `Out of Bounds Error: ${outOfBoundsErrorMessages.moveOutOfBounds(1, 6, 1, 5)}`
     );
   });
 

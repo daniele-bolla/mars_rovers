@@ -2,6 +2,7 @@ import { parseRoverWithErrors } from "../parser";
 import { executeCommandsWithErrors, roverToString } from "../rover";
 import { Plateau, ProcessRoverResult, OutOfBoundsError } from "../types";
 import { isInBounds } from "../validation";
+import { outOfBoundsErrorMessages } from "../utils/errorMessages";
 
 export const processRoverWithErrors = (
   roverLine: string,
@@ -18,7 +19,12 @@ export const processRoverWithErrors = (
 
   if (!isInBounds(initialRover.position, plateau)) {
     throw new OutOfBoundsError(
-      `Initial rover position (${initialRover.position.x},${initialRover.position.y}) is out of bounds for plateau (${plateau.width},${plateau.height}).`
+      outOfBoundsErrorMessages.initialPosition(
+        initialRover.position.x,
+        initialRover.position.y,
+        plateau.width,
+        plateau.height
+      )
     );
   }
 

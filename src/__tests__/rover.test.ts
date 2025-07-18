@@ -3,6 +3,7 @@ import { turnLeft, turnRight } from "../rover/directions.rover";
 import { executeCommand, executeCommands } from "../rover/execute.rover";
 import { roverToString } from "../rover/tostring.rover";
 import { Plateau, Rover } from "../types";
+import { outOfBoundsErrorMessages } from "../utils/errorMessages";
 
 describe("rover", () => {
   const plateau: Plateau = { width: 5, height: 5 };
@@ -36,7 +37,7 @@ describe("rover", () => {
     expect(newRover).toEqual({
       rover: { position: { x: 5, y: 5 }, direction: "N" },
       success: false,
-      message: "Out of Bounds Error: Move to (5,6) is out of bounds or invalid. Rover remains at (5,5).",
+      message: `Out of Bounds Error: ${outOfBoundsErrorMessages.moveOutOfBounds(5, 6, 5, 5)}`,
     });
   });
 

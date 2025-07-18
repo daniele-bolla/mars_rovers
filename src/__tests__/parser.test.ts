@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { parsePlateauWithErrors } from "../parser/plateau.parser";
 import { parseRoverWithErrors } from "../parser/rover.parser";
 import { PlateauParsingError, RoverParsingError } from "../types";
+import { plateauErrorMessages, roverErrorMessages } from "../utils/errorMessages";
 
 describe("parser", () => {
   it("parsePlateau should correctly parse valid plateau input", () => {
@@ -28,7 +29,7 @@ describe("parser", () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error).toBeInstanceOf(PlateauParsingError);
-      expect(result.error.message).toBe("Plateau Parsing Error: Plateau must have exactly 2 numbers");
+      expect(result.error.message).toBe(`Plateau Parsing Error: ${plateauErrorMessages.invalidFormat}`);
     }
   });
 
@@ -38,7 +39,7 @@ describe("parser", () => {
     if (!result.success) {
       expect(result.error).toBeInstanceOf(RoverParsingError);
       expect(result.error.message).toBe(
-        "Rover Parsing Error: Invalid direction: X, direction must be any of N, E, S, W"
+        `Rover Parsing Error: ${roverErrorMessages.invalidDirection("X", ["N", "E", "S", "W"])}`
       );
     }
   });
@@ -48,7 +49,7 @@ describe("parser", () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error).toBeInstanceOf(PlateauParsingError);
-      expect(result.error.message).toBe("Plateau Parsing Error: Plateau dimensions must be positive numbers");
+      expect(result.error.message).toBe(`Plateau Parsing Error: ${plateauErrorMessages.nonPositiveDimensions}`);
     }
   });
 
@@ -57,7 +58,7 @@ describe("parser", () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error).toBeInstanceOf(PlateauParsingError);
-      expect(result.error.message).toBe("Plateau Parsing Error: Plateau dimensions cannot exceed 100");
+      expect(result.error.message).toBe(`Plateau Parsing Error: ${plateauErrorMessages.exceedsMaxSize(100)}`);
     }
   });
 
@@ -67,7 +68,7 @@ describe("parser", () => {
     if (!result.success) {
       expect(result.error).toBeInstanceOf(RoverParsingError);
       expect(result.error.message).toBe(
-        "Rover Parsing Error: Rover position coordinates must be non-negative"
+        `Rover Parsing Error: ${roverErrorMessages.negativeCoordinates}`
       );
     }
   });

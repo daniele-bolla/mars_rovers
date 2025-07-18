@@ -10,6 +10,7 @@ import {
   MarsRoverError,
 } from "../types";
 import { isCollision, addPositionToOccupied } from "../validation";
+import { collisionErrorMessages } from "../utils/errorMessages";
 
 export const processInputWithErrors = (input: string): ProcessInputResult => {
   const lines = input.trim().split("\n");
@@ -40,7 +41,10 @@ export const processInputWithErrors = (input: string): ProcessInputResult => {
     initialRovers.push(initialRover);
     if (isCollision(initialRover.position, initialOccupiedPositions)) {
       throw new CollisionError(
-        `Initial position (${initialRover.position.x},${initialRover.position.y}) collides with another rover.`
+        collisionErrorMessages.initialCollision(
+          initialRover.position.x,
+          initialRover.position.y
+        )
       );
     } else {
       addPositionToOccupied(initialRover.position, initialOccupiedPositions);
@@ -68,7 +72,10 @@ export const processInputWithErrors = (input: string): ProcessInputResult => {
       errors.push(...roverProcessingErrors);
     } else if (isCollision(finalRover.position, occupiedFinalPositions)) {
       throw new CollisionError(
-        `Collision detected at (${finalRover.position.x},${finalRover.position.y})`
+        collisionErrorMessages.finalCollision(
+          finalRover.position.x,
+          finalRover.position.y
+        )
       );
     } else {
       finalRovers.push(finalRover);

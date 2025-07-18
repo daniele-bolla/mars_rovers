@@ -1,5 +1,6 @@
 import { Direction, Position, DIRECTIONS, MarsRoverError } from "../types";
 import { switchCases } from "../utils/switchCases";
+import { commandErrorMessages } from "../utils/errorMessages";
 
 export const turnLeft = (direction: Direction): Direction => {
   const index = DIRECTIONS.indexOf(direction);
@@ -21,7 +22,7 @@ export const getMoveDelta = (direction: Direction): Position => {
       W: () => ({ x: -1, y: 0 }),
     },
     () => {
-      throw new MarsRoverError(`Unknown direction: ${direction}`);
+      throw new MarsRoverError(commandErrorMessages.unknownCommand(direction));
     }
   );
 };

@@ -6,13 +6,16 @@ import {
   isPlateauDimensionsMaxValid,
   MAX_PLATEAU_SIZE,
 } from "../validation";
+import { plateauErrorMessages } from "../utils/errorMessages";
 
-// Parse plateau from string "5 5"
 export const parsePlateauWithErrors = (input: string): ParseResult<Plateau> => {
   const parts = input.trim().split(" ");
 
   if (isNotMadeOfTwoParts(parts)) {
-    return { success: false, error: new PlateauParsingError("Plateau must have exactly 2 numbers") };
+    return {
+      success: false,
+      error: new PlateauParsingError(plateauErrorMessages.invalidFormat),
+    };
   }
 
   const [width, height] = parts.map(Number);
@@ -20,18 +23,25 @@ export const parsePlateauWithErrors = (input: string): ParseResult<Plateau> => {
   if (!isPairPositiveNumbers(width, height)) {
     return {
       success: false,
-      error: new PlateauParsingError("Plateau dimensions must be positive numbers"),
+      error: new PlateauParsingError(
+        plateauErrorMessages.nonPositiveDimensions
+      ),
     };
   }
 
   if (isNotTwoNumbers(width, height)) {
-    return { success: false, error: new PlateauParsingError("Plateau dimensions must be numbers") };
+    return {
+      success: false,
+      error: new PlateauParsingError(plateauErrorMessages.notNumbers),
+    };
   }
 
   if (!isPlateauDimensionsMaxValid(width, height)) {
     return {
       success: false,
-      error: new PlateauParsingError(`Plateau dimensions cannot exceed ${MAX_PLATEAU_SIZE}`),
+      error: new PlateauParsingError(
+        plateauErrorMessages.exceedsMaxSize(MAX_PLATEAU_SIZE)
+      ),
     };
   }
 

@@ -5,6 +5,7 @@ import {
   isNotTwoNumbers,
   isDirection,
 } from "../validation";
+import { roverErrorMessages } from "../utils/errorMessages";
 // Parse rover from string "1 2 N"
 export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
   const parts = input.trim().split(" ");
@@ -12,9 +13,7 @@ export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
   if (isNotMadeOfThreeParts(parts)) {
     return {
       success: false,
-      error: new RoverParsingError(
-        "Rover must have position (x y) and direction: 3 characters in total"
-      ),
+      error: new RoverParsingError(roverErrorMessages.invalidFormat),
     };
   }
 
@@ -23,13 +22,13 @@ export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
   const y = Number(yStr);
 
   if (isNotTwoNumbers(x, y)) {
-    return { success: false, error: new RoverParsingError("Rover position must be numbers") };
+    return { success: false, error: new RoverParsingError(roverErrorMessages.notNumbers) };
   }
 
   if (!isPairNonNegativeNumbers(x, y)) {
     return {
       success: false,
-      error: new RoverParsingError("Rover position coordinates must be non-negative"),
+      error: new RoverParsingError(roverErrorMessages.negativeCoordinates),
     };
   }
 
@@ -37,7 +36,7 @@ export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
     return {
       success: false,
       error: new RoverParsingError(
-        `Invalid direction: ${direction}, direction must be any of ${DIRECTIONS.join(", ")}`
+        roverErrorMessages.invalidDirection(direction, [...DIRECTIONS])
       ),
     };
   }

@@ -11,6 +11,7 @@ import {
 import { getMoveDelta, turnLeft, turnRight } from "./directions.rover";
 import { switchCases } from "../utils/switchCases";
 import { isCommand, isInBounds } from "../validation";
+import { outOfBoundsErrorMessages, commandErrorMessages } from "../utils/errorMessages";
 
 export const executeCommand = (
   rover: Rover,
@@ -53,16 +54,14 @@ export const executeCommand = (
         return {
           rover: rover,
           success: false,
-          message: new OutOfBoundsError(
-            `Move to (${newPosition.x},${newPosition.y}) is out of bounds or invalid. Rover remains at (${rover.position.x},${rover.position.y}).`
-          ).message,
+          message: new OutOfBoundsError(outOfBoundsErrorMessages.moveOutOfBounds(newPosition.x, newPosition.y, rover.position.x, rover.position.y)).message,
         };
       },
     },
     () => ({
       rover: rover,
       success: false,
-      message: new InvalidCommandError(`Unknown command: ${command}`).message,
+      message: new InvalidCommandError(commandErrorMessages.unknownCommand(command)).message,
     })
   );
 };
@@ -103,7 +102,7 @@ export const executeCommandsWithErrors = (
       }
       return newRover;
     } else {
-      errors.push(new InvalidCommandError(`Invalid command '${char}' at position ${index}, skipping.`));
+      errors.push(new InvalidCommandError(commandErrorMessages.invalidCommand(char, index)));
       return currentRover;
     }
   }, rover);
