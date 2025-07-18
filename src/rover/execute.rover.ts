@@ -5,14 +5,9 @@ import {
   Rover,
   ExecuteCommandResult,
 } from "../types";
-import {
-  getMoveDelta,
-  isValidPosition,
-  turnLeft,
-  turnRight,
-} from "./directions.rover";
+import { getMoveDelta, turnLeft, turnRight } from "./directions.rover";
 import { switchCases } from "../utils/switchCases";
-import { isCommand } from "../validation";
+import { isCommand, isInBounds } from "../validation";
 
 export const executeCommand = (
   rover: Rover,
@@ -43,7 +38,7 @@ export const executeCommand = (
           y: rover.position.y + delta.y,
         };
 
-        if (isValidPosition(newPosition, plateau)) {
+        if (isInBounds(newPosition, plateau)) {
           return {
             rover: {
               ...rover,

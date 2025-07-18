@@ -1,9 +1,4 @@
-import {
-  Direction,
-  Position,
-  Plateau,
-  DIRECTIONS,
-} from "../types";
+import { Direction, Position, DIRECTIONS } from "../types";
 import { switchCases } from "../utils/switchCases";
 
 export const turnLeft = (direction: Direction): Direction => {
@@ -28,17 +23,5 @@ export const getMoveDelta = (direction: Direction): Position => {
     () => {
       throw new Error(`Unknown direction: ${direction}`);
     }
-  );
-};
-
-export const isValidPosition = (
-  position: Position,
-  plateau: Plateau
-): boolean => {
-  return (
-    position.x >= 0 &&
-    position.x <= plateau.width &&
-    position.y >= 0 &&
-    position.y <= plateau.height
   );
 };

@@ -1,6 +1,7 @@
 import { parseRoverWithErrors } from "../parser";
-import { executeCommandsWithErrors, isValidPosition, roverToString } from "../rover";
+import { executeCommandsWithErrors, roverToString } from "../rover";
 import { Plateau, ProcessRoverResult } from "../types";
+import { isInBounds } from "../validation";
 
 export const processRoverWithErrors = (
   roverLine: string,
@@ -19,7 +20,7 @@ export const processRoverWithErrors = (
   const initialRover = parseResult.value;
 
   // Validate initial rover position against plateau boundaries
-  if (!isValidPosition(initialRover.position, plateau)) {
+  if (!isInBounds(initialRover.position, plateau)) {
     return {
       output: roverToString(initialRover),
       errors: [
