@@ -13,12 +13,12 @@ function directionToArrow(direction: string): string {
     () => "?" // Unknown direction
   );
 }
-export function showGrid(plateau: Plateau, rovers: Rover[]) {
+export function displayGrid({ height, width }: Plateau, rovers: Rover[]) {
   console.log("\nPlateau:");
 
-  for (let y = plateau.height; y >= 0; y--) {
+  for (let y = height; y >= 0; y--) {
     let row = "";
-    for (let x = 0; x <= plateau.width; x++) {
+    for (let x = 0; x <= width; x++) {
       const rover = rovers.find(
         (r) => r.position.x === x && r.position.y === y
       );

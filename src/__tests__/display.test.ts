@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { showGrid } from "../display/grid.display";
+import { displayGrid } from "../display/grid.display";
 import { Plateau, Rover } from "../types";
 
 const mockConsoleLog = vi.spyOn(console, "log").mockImplementation(() => {});
 
-describe("showGrid", () => {
+describe("displayGrid", () => {
   beforeEach(() => {
     mockConsoleLog.mockClear();
   });
@@ -22,7 +22,7 @@ describe("showGrid", () => {
       },
     ];
 
-    showGrid(plateau, rovers);
+    displayGrid(plateau, rovers);
 
     expect(mockConsoleLog).toHaveBeenCalledWith("\nPlateau:");
     expect(mockConsoleLog).toHaveBeenCalledWith(" .  .  .  .  .  . ");

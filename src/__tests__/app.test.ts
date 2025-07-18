@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { runMarsRoverApp } from "../app/mars-rover-app";
+import { runMarsRoverApp } from "../app";
 
 // Mock console.log to capture output
 const mockConsoleLog = vi.spyOn(console, "log").mockImplementation(() => {});
