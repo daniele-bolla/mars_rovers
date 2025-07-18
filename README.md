@@ -56,3 +56,9 @@ npm test
 ```
 
 This will execute all unit tests located in the `src/__tests__` directory. The tests are comprehensive, covering various aspects of the application's logic, including input parsing, rover movement, and error handling.
+
+# Further Improvements
+
+I am running out of time but anyway happy with the result.
+Further improvements would have been remove error handling on `parsing` and gather them only on `process`.
+I used Dependency Injection to include `displlayGrid` method. This paradigm can be used more but for this app it may be overkill.
