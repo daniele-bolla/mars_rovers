@@ -1,4 +1,4 @@
-import { Direction, Position, DIRECTIONS } from "../types";
+import { Direction, Position, DIRECTIONS, MarsRoverError } from "../types";
 import { switchCases } from "../utils/switchCases";
 
 export const turnLeft = (direction: Direction): Direction => {
@@ -21,7 +21,7 @@ export const getMoveDelta = (direction: Direction): Position => {
       W: () => ({ x: -1, y: 0 }),
     },
     () => {
-      throw new Error(`Unknown direction: ${direction}`);
+      throw new MarsRoverError(`Unknown direction: ${direction}`);
     }
   );
 };

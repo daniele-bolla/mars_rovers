@@ -1,4 +1,4 @@
-import { ParseResult, Plateau } from "../types";
+import { ParseResult, Plateau, PlateauParsingError } from "../types";
 import {
   isNotTwoNumbers,
   isNotMadeOfTwoParts,
@@ -12,7 +12,7 @@ export const parsePlateauWithErrors = (input: string): ParseResult<Plateau> => {
   const parts = input.trim().split(" ");
 
   if (isNotMadeOfTwoParts(parts)) {
-    return { success: false, error: "Plateau must have exactly 2 numbers" };
+    return { success: false, error: new PlateauParsingError("Plateau must have exactly 2 numbers") };
   }
 
   const [width, height] = parts.map(Number);
@@ -20,18 +20,18 @@ export const parsePlateauWithErrors = (input: string): ParseResult<Plateau> => {
   if (!isPairPositiveNumbers(width, height)) {
     return {
       success: false,
-      error: "Plateau dimensions must be positive numbers",
+      error: new PlateauParsingError("Plateau dimensions must be positive numbers"),
     };
   }
 
   if (isNotTwoNumbers(width, height)) {
-    return { success: false, error: "Plateau dimensions must be numbers" };
+    return { success: false, error: new PlateauParsingError("Plateau dimensions must be numbers") };
   }
 
   if (!isPlateauDimensionsMaxValid(width, height)) {
     return {
       success: false,
-      error: `Plateau dimensions cannot exceed ${MAX_PLATEAU_SIZE}`,
+      error: new PlateauParsingError(`Plateau dimensions cannot exceed ${MAX_PLATEAU_SIZE}`),
     };
   }
 
@@ -40,6 +40,6 @@ export const parsePlateauWithErrors = (input: string): ParseResult<Plateau> => {
 
 export const parsePlateauWithThrowErrors = (input: string): Plateau => {
   const result = parsePlateauWithErrors(input);
-  if (!result.success) throw new Error(result.error);
+  if (!result.success) throw result.error;
   return result.value;
 };

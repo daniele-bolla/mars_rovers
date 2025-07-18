@@ -3,3 +3,4 @@ export * from "./rover.types";
 export * from "./plateau.types";
 export * from "./command.types";
 export * from "./return.types";
+export * from "./errors.types";

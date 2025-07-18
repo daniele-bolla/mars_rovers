@@ -1,6 +1,6 @@
 import * as readline from "readline";
 import { runMarsRoverApp } from "./app";
-import { displayGrid, displayInitialMessage } from "./display";
+import { displayInitialMessage } from "./display";
 
 async function main() {
   displayInitialMessage();
@@ -27,7 +27,7 @@ async function main() {
     });
   });
 
-  await runMarsRoverApp(input, displayGrid);
+  await runMarsRoverApp(input);
 
   rl.close();
 }

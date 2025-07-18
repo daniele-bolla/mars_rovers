@@ -1,9 +1,10 @@
+import { MarsRoverError } from "./errors.types";
 import { Plateau } from "./plateau.types";
 import { Rover } from "./rover.types";
 
 export interface ProcessInputResult {
   results: string[];
-  errors: Array<{ rover: number; errors: string[] }>;
+  errors: MarsRoverError[];
   initialRovers: Rover[];
   finalRovers: Rover[];
   plateau: Plateau;
@@ -11,7 +12,8 @@ export interface ProcessInputResult {
 
 export interface ProcessRoverResult {
   output: string;
-  errors: string[];
+  finalRover: Rover;
+  errors: MarsRoverError[];
 }
 
 export interface ExecuteCommandResult {
@@ -22,4 +24,4 @@ export interface ExecuteCommandResult {
 
 export type ParseResult<T> =
   | { success: true; value: T }
-  | { success: false; error: string };
+  | { success: false; error: Error };

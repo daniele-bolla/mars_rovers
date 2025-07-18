@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { parsePlateauWithErrors } from "../parser/plateau.parser";
 import { parseRoverWithErrors } from "../parser/rover.parser";
+import { PlateauParsingError, RoverParsingError } from "../types";
 
 describe("parser", () => {
   it("parsePlateau should correctly parse valid plateau input", () => {
@@ -26,7 +27,8 @@ describe("parser", () => {
     const result = parsePlateauWithErrors("5");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBe("Plateau must have exactly 2 numbers");
+      expect(result.error).toBeInstanceOf(PlateauParsingError);
+      expect(result.error.message).toBe("Plateau Parsing Error: Plateau must have exactly 2 numbers");
     }
   });
 
@@ -34,8 +36,9 @@ describe("parser", () => {
     const result = parseRoverWithErrors("1 2 X");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBe(
-        "Invalid direction: X, direction must be any of N, E, S, W"
+      expect(result.error).toBeInstanceOf(RoverParsingError);
+      expect(result.error.message).toBe(
+        "Rover Parsing Error: Invalid direction: X, direction must be any of N, E, S, W"
       );
     }
   });
@@ -44,7 +47,8 @@ describe("parser", () => {
     const result = parsePlateauWithErrors("5 0");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBe("Plateau dimensions must be positive numbers");
+      expect(result.error).toBeInstanceOf(PlateauParsingError);
+      expect(result.error.message).toBe("Plateau Parsing Error: Plateau dimensions must be positive numbers");
     }
   });
 
@@ -52,7 +56,8 @@ describe("parser", () => {
     const result = parsePlateauWithErrors("101 5");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBe("Plateau dimensions cannot exceed 100");
+      expect(result.error).toBeInstanceOf(PlateauParsingError);
+      expect(result.error.message).toBe("Plateau Parsing Error: Plateau dimensions cannot exceed 100");
     }
   });
 
@@ -60,8 +65,9 @@ describe("parser", () => {
     const result = parseRoverWithErrors("-1 2 N");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBe(
-        "Rover position coordinates must be non-negative"
+      expect(result.error).toBeInstanceOf(RoverParsingError);
+      expect(result.error.message).toBe(
+        "Rover Parsing Error: Rover position coordinates must be non-negative"
       );
     }
   });

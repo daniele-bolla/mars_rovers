@@ -36,7 +36,7 @@ describe("rover", () => {
     expect(newRover).toEqual({
       rover: { position: { x: 5, y: 5 }, direction: "N" },
       success: false,
-      message: "Move to (5,6) is out of bounds or invalid. Rover remains at (5,5).",
+      message: "Out of Bounds Error: Move to (5,6) is out of bounds or invalid. Rover remains at (5,5).",
     });
   });
 

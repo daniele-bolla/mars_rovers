@@ -1,6 +1,6 @@
 import { parseRoverWithErrors } from "../parser";
 import { executeCommandsWithErrors, roverToString } from "../rover";
-import { Plateau, ProcessRoverResult } from "../types";
+import { Plateau, ProcessRoverResult, OutOfBoundsError } from "../types";
 import { isInBounds } from "../validation";
 
 export const processRoverWithErrors = (
@@ -11,22 +11,15 @@ export const processRoverWithErrors = (
   const parseResult = parseRoverWithErrors(roverLine);
 
   if (!parseResult.success) {
-    return {
-      output: "", // No output for a rover that couldn't be parsed
-      errors: [`Failed to parse rover: ${parseResult.error}`],
-    };
+    throw parseResult.error;
   }
 
   const initialRover = parseResult.value;
 
-  // Validate initial rover position against plateau boundaries
   if (!isInBounds(initialRover.position, plateau)) {
-    return {
-      output: roverToString(initialRover),
-      errors: [
-        `Initial rover position (${initialRover.position.x},${initialRover.position.y}) is out of bounds for plateau (${plateau.width},${plateau.height}).`,
-      ],
-    };
+    throw new OutOfBoundsError(
+      `Initial rover position (${initialRover.position.x},${initialRover.position.y}) is out of bounds for plateau (${plateau.width},${plateau.height}).`
+    );
   }
 
   const { rover: finalRover, errors } = executeCommandsWithErrors(
@@ -34,8 +27,10 @@ export const processRoverWithErrors = (
     commandLine,
     plateau
   );
+
   return {
     output: roverToString(finalRover),
+    finalRover,
     errors,
   };
 };

@@ -1,4 +1,4 @@
-import { DIRECTIONS, Rover, ParseResult } from "../types";
+import { DIRECTIONS, Rover, ParseResult, RoverParsingError } from "../types";
 import {
   isNotMadeOfThreeParts,
   isPairNonNegativeNumbers,
@@ -12,8 +12,9 @@ export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
   if (isNotMadeOfThreeParts(parts)) {
     return {
       success: false,
-      error:
-        "Rover must have position (x y) and direction: 3 characters in total",
+      error: new RoverParsingError(
+        "Rover must have position (x y) and direction: 3 characters in total"
+      ),
     };
   }
 
@@ -22,20 +23,22 @@ export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
   const y = Number(yStr);
 
   if (isNotTwoNumbers(x, y)) {
-    return { success: false, error: "Rover position must be numbers" };
+    return { success: false, error: new RoverParsingError("Rover position must be numbers") };
   }
 
   if (!isPairNonNegativeNumbers(x, y)) {
     return {
       success: false,
-      error: "Rover position coordinates must be non-negative",
+      error: new RoverParsingError("Rover position coordinates must be non-negative"),
     };
   }
 
   if (!isDirection(direction)) {
     return {
       success: false,
-      error: `Invalid direction: ${direction}, direction must be any of ${DIRECTIONS.join(", ")}`,
+      error: new RoverParsingError(
+        `Invalid direction: ${direction}, direction must be any of ${DIRECTIONS.join(", ")}`
+      ),
     };
   }
 
@@ -50,6 +53,6 @@ export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
 
 export const parseRoverWithThrowErrors = (input: string): Rover => {
   const result = parseRoverWithErrors(input);
-  if (!result.success) throw new Error(result.error);
+  if (!result.success) throw result.error;
   return result.value;
 };

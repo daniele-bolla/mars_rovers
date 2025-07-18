@@ -4,6 +4,9 @@ import {
   Position,
   Rover,
   ExecuteCommandResult,
+  OutOfBoundsError,
+  InvalidCommandError,
+  MarsRoverError,
 } from "../types";
 import { getMoveDelta, turnLeft, turnRight } from "./directions.rover";
 import { switchCases } from "../utils/switchCases";
@@ -50,14 +53,16 @@ export const executeCommand = (
         return {
           rover: rover,
           success: false,
-          message: `Move to (${newPosition.x},${newPosition.y}) is out of bounds or invalid. Rover remains at (${rover.position.x},${rover.position.y}).`,
+          message: new OutOfBoundsError(
+            `Move to (${newPosition.x},${newPosition.y}) is out of bounds or invalid. Rover remains at (${rover.position.x},${rover.position.y}).`
+          ).message,
         };
       },
     },
     () => ({
       rover: rover,
       success: false,
-      message: `Unknown command: ${command}`,
+      message: new InvalidCommandError(`Unknown command: ${command}`).message,
     })
   );
 };
@@ -67,7 +72,7 @@ export const executeCommands = (
   commands: string,
   plateau: Plateau
 ): Rover => {
-  const commandArray = commands.split("").filter(isCommand); // This acts as a guard for type safety, returning only valid commands
+  const commandArray = commands.split("").filter(isCommand);
 
   return commandArray.reduce((currentRover, command) => {
     const { rover: newRover } = executeCommand(currentRover, command, plateau);
@@ -79,8 +84,8 @@ export const executeCommandsWithErrors = (
   rover: Rover,
   commands: string,
   plateau: Plateau
-): { rover: Rover; errors: string[] } => {
-  const errors: string[] = [];
+): { rover: Rover; errors: MarsRoverError[] } => {
+  const errors: MarsRoverError[] = [];
 
   const finalRover = commands.split("").reduce((currentRover, char, index) => {
     if (isCommand(char)) {
@@ -91,14 +96,14 @@ export const executeCommandsWithErrors = (
       } = executeCommand(currentRover, char, plateau);
       if (!success && message) {
         const isErrorsEmpty = errors.length === 0;
-        const isMessageNotInErrors = errors[errors.length - 1] !== message;
+        const isMessageNotInErrors = errors[errors.length - 1]?.message !== message; // Compare message property
         if (isErrorsEmpty || isMessageNotInErrors) {
-          errors.push(message);
+          errors.push(new MarsRoverError(message)); // Push MarsRoverError instance
         }
       }
       return newRover;
     } else {
-      errors.push(`Invalid command '${char}' at position ${index}, skipping.`);
+      errors.push(new InvalidCommandError(`Invalid command '${char}' at position ${index}, skipping.`));
       return currentRover;
     }
   }, rover);

@@ -1,41 +1,18 @@
 import { processInputWithErrors } from "../process";
-import { Rover, Plateau } from "../types";
+import { displayMarsRoverResults } from "../display";
+import { MarsRoverError } from "../types";
 
-export async function runMarsRoverApp(
-  input: string,
-  displayGrid: (plateau: Plateau, rovers: Rover[]) => void
-) {
+export async function runMarsRoverApp(input: string) {
   try {
-    const { results, errors, finalRovers, initialRovers, plateau } =
-      processInputWithErrors(input);
-
-    // Show initial state
-    console.log("\nInitial State:");
-    displayGrid(plateau, initialRovers);
-
-    // Show final state
-    console.log("Final State:");
-    displayGrid(plateau, finalRovers);
-
-    // Show results
-    console.log("Results:");
-    results.forEach((result, index) => {
-      console.log(`Rover ${index + 1}: ${result}`);
-    });
-
-    // Show errors
-    if (errors.length > 0) {
-      console.log("\nErrors:");
-      errors.forEach(({ rover, errors }) => {
-        console.log(`Rover ${rover}:`);
-        errors.forEach((error) => console.log(`  - ${error}`));
-      });
-    }
+    const result = processInputWithErrors(input);
+    displayMarsRoverResults(result);
   } catch (error) {
-    if (error instanceof Error) {
-      console.log("Error:", error.message);
+    if (error instanceof MarsRoverError) {
+      console.error("Error:", error.message);
+    } else if (error instanceof Error) {
+      console.error("An unexpected error occurred:", error.message);
     } else {
-      console.log("Error:", error);
+      console.error("An unknown error occurred:", error);
     }
   }
 }

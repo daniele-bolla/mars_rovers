@@ -1,12 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { runMarsRoverApp } from "../app";
+import * as display from "../display/messages.display"; // Import the module containing displayMarsRoverResults
 
 // Mock console.log to capture output
 const mockConsoleLog = vi.spyOn(console, "log").mockImplementation(() => {});
+const mockDisplayMarsRoverResults = vi
+  .spyOn(display, "displayMarsRoverResults")
+  .mockImplementation(() => {});
 
 describe("runMarsRoverApp", () => {
   beforeEach(() => {
     mockConsoleLog.mockClear();
+    mockDisplayMarsRoverResults.mockClear();
   });
 
   it("should process the input and display results correctly", async () => {
@@ -16,17 +21,13 @@ LMLMLMLMM
 3 3 E
 MMRMMRMRRM`;
 
-    const mockDisplayGrid = vi.fn();
+    await runMarsRoverApp(input);
 
-    await runMarsRoverApp(input, mockDisplayGrid);
-
-    // Assertions based on expected console output and mock calls
-    expect(mockConsoleLog).toHaveBeenCalledWith("\nInitial State:");
-    expect(mockDisplayGrid).toHaveBeenCalledTimes(2); // Initial and Final state
-    expect(mockConsoleLog).toHaveBeenCalledWith("Final State:");
-    expect(mockConsoleLog).toHaveBeenCalledWith("Results:");
-    expect(mockConsoleLog).toHaveBeenCalledWith("Rover 1: 1 3 N");
-    expect(mockConsoleLog).toHaveBeenCalledWith("Rover 2: 5 1 E");
+    // Assertions based on expected calls to displayMarsRoverResults
+    expect(mockDisplayMarsRoverResults).toHaveBeenCalledTimes(1);
+    const result = mockDisplayMarsRoverResults.mock.calls[0][0];
+    expect(result.results).toEqual(["1 3 N", "5 1 E"]);
+    expect(result.errors).toEqual([]);
   });
 
   it("should handle invalid commands and display errors", async () => {
@@ -34,14 +35,12 @@ MMRMMRMRRM`;
 1 2 N
 LMLMLMLMMX`; // Invalid command 'X'
 
-    const mockDisplayGrid = vi.fn();
+    await runMarsRoverApp(input);
 
-    await runMarsRoverApp(input, mockDisplayGrid);
-
-    expect(mockConsoleLog).toHaveBeenCalledWith("\nErrors:");
-    expect(mockConsoleLog).toHaveBeenCalledWith("Rover 1:");
-    expect(mockConsoleLog).toHaveBeenCalledWith(
-      "  - Invalid command 'X' at position 9, skipping."
-    );
+    expect(mockDisplayMarsRoverResults).toHaveBeenCalledTimes(1);
+    const result = mockDisplayMarsRoverResults.mock.calls[0][0];
+    expect(result.results[0]).toContain("1 3 N"); // Rover 1 still moves to its final position before the invalid command
+    expect(result.errors.length).toBeGreaterThan(0);
+    expect(result.errors[0].message).toContain("Invalid command 'X'");
   });
 });
