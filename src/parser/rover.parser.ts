@@ -1,9 +1,15 @@
-import { DIRECTIONS, Rover, isDirection, ParseResult } from "../types";
+import { DIRECTIONS, Rover, ParseResult } from "../types";
+import {
+  isNotMadeOfThreeParts,
+  isPairNonNegativeNumbers,
+  isNotTwoNumbers,
+  isDirection,
+} from "../validation";
 // Parse rover from string "1 2 N"
 export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
   const parts = input.trim().split(" ");
 
-  if (parts.length !== 3) {
+  if (isNotMadeOfThreeParts(parts)) {
     return {
       success: false,
       error:
@@ -15,11 +21,11 @@ export const parseRoverWithErrors = (input: string): ParseResult<Rover> => {
   const x = Number(xStr);
   const y = Number(yStr);
 
-  if (isNaN(x) || isNaN(y)) {
+  if (isNotTwoNumbers(x, y)) {
     return { success: false, error: "Rover position must be numbers" };
   }
 
-  if (x < 0 || y < 0) {
+  if (!isPairNonNegativeNumbers(x, y)) {
     return {
       success: false,
       error: "Rover position coordinates must be non-negative",

@@ -1,4 +1,10 @@
-import { Command, isCommand, Plateau, Position, Rover, ExecuteCommandResult } from "../types";
+import {
+  Command,
+  Plateau,
+  Position,
+  Rover,
+  ExecuteCommandResult,
+} from "../types";
 import {
   getMoveDelta,
   isValidPosition,
@@ -6,13 +12,13 @@ import {
   turnRight,
 } from "./directions.rover";
 import { switchCases } from "../utils/switchCases";
+import { isCommand } from "../validation";
 
 export const executeCommand = (
   rover: Rover,
   command: Command,
   plateau: Plateau
 ): ExecuteCommandResult => {
-
   return switchCases<Command, ExecuteCommandResult>(
     command,
     {

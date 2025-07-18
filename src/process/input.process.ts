@@ -5,7 +5,7 @@ import {
 import { processRoverWithErrors } from "./rover.process";
 import { Rover, ProcessInputResult } from "../types";
 import { executeCommands } from "../rover";
-import { isCollision, addPositionToOccupied } from "../rover/collision.rover"; // New import
+import { isCollision, addPositionToOccupied } from "../validation"; // New import
 
 export const processInputWithErrors = (input: string): ProcessInputResult => {
   const lines = input.trim().split("\n");
