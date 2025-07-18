@@ -1,8 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { parsePlateauWithErrors } from "../parser/plateau.parser";
 import { parseRoverWithErrors } from "../parser/rover.parser";
-import { PlateauParsingError, RoverParsingError } from "../types";
-import { plateauErrorMessages, roverErrorMessages } from "../utils/errorMessages";
+import {
+  plateauErrorMessages,
+  roverErrorMessages,
+} from "../utils/errorMessages";
+import {
+  PLATEAU_PARSING_ERROR_NAME,
+  ROVER_PARSING_ERROR_NAME,
+} from "../utils/errorNames";
 
 describe("parser", () => {
   it("parsePlateau should correctly parse valid plateau input", () => {
@@ -28,8 +34,10 @@ describe("parser", () => {
     const result = parsePlateauWithErrors("5");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBeInstanceOf(PlateauParsingError);
-      expect(result.error.message).toBe(`Plateau Parsing Error: ${plateauErrorMessages.invalidFormat}`);
+      expect(result.error.name).toBe(PLATEAU_PARSING_ERROR_NAME);
+      expect(result.error.message).toBe(
+        `Plateau Parsing Error: ${plateauErrorMessages.invalidFormat}`
+      );
     }
   });
 
@@ -37,7 +45,7 @@ describe("parser", () => {
     const result = parseRoverWithErrors("1 2 X");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBeInstanceOf(RoverParsingError);
+      expect(result.error.name).toBe(ROVER_PARSING_ERROR_NAME);
       expect(result.error.message).toBe(
         `Rover Parsing Error: ${roverErrorMessages.invalidDirection("X", ["N", "E", "S", "W"])}`
       );
@@ -48,8 +56,10 @@ describe("parser", () => {
     const result = parsePlateauWithErrors("5 0");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBeInstanceOf(PlateauParsingError);
-      expect(result.error.message).toBe(`Plateau Parsing Error: ${plateauErrorMessages.nonPositiveDimensions}`);
+      expect(result.error.name).toBe(PLATEAU_PARSING_ERROR_NAME);
+      expect(result.error.message).toBe(
+        `Plateau Parsing Error: ${plateauErrorMessages.nonPositiveDimensions}`
+      );
     }
   });
 
@@ -57,8 +67,10 @@ describe("parser", () => {
     const result = parsePlateauWithErrors("101 5");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBeInstanceOf(PlateauParsingError);
-      expect(result.error.message).toBe(`Plateau Parsing Error: ${plateauErrorMessages.exceedsMaxSize(100)}`);
+      expect(result.error.name).toBe(PLATEAU_PARSING_ERROR_NAME);
+      expect(result.error.message).toBe(
+        `Plateau Parsing Error: ${plateauErrorMessages.exceedsMaxSize(100)}`
+      );
     }
   });
 
@@ -66,7 +78,7 @@ describe("parser", () => {
     const result = parseRoverWithErrors("-1 2 N");
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error).toBeInstanceOf(RoverParsingError);
+      expect(result.error.name).toBe(ROVER_PARSING_ERROR_NAME);
       expect(result.error.message).toBe(
         `Rover Parsing Error: ${roverErrorMessages.negativeCoordinates}`
       );

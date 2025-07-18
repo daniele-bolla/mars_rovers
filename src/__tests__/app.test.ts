@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { runMarsRoverApp } from "../app";
 import * as display from "../display/messages.display"; // Import the module containing displayMarsRoverResults
+import { INVALID_COMMAND_ERROR_NAME } from "../utils/errorNames";
 
 // Mock console.log to capture output
 const mockConsoleLog = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -41,6 +42,6 @@ LMLMLMLMMX`; // Invalid command 'X'
     const result = mockDisplayMarsRoverResults.mock.calls[0][0];
     expect(result.results[0]).toContain("1 3 N"); // Rover 1 still moves to its final position before the invalid command
     expect(result.errors.length).toBeGreaterThan(0);
-    expect(result.errors[0].message).toContain("Invalid command 'X'");
+    expect(result.errors[0].name).toBe(INVALID_COMMAND_ERROR_NAME);
   });
 });
