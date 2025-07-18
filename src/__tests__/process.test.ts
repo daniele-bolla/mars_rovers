@@ -15,9 +15,7 @@ describe("process", () => {
     expect(result).toEqual(expectedOutput);
   });
   it("processInput should correctly process a input string, other example", () => {
-    const input = `3 3
-1 1 E
-MRM`;
+    const input = `3 3\n1 1 E\nMRM`;
     const expectedOutput = {
       results: ["2 0 S"],
       errors: [],
@@ -68,7 +66,27 @@ MRM`;
       },
     ]);
     expect(initialRovers).toEqual([{ position: { x: 6, y: 2 }, direction: 'N' }]);
-    expect(finalRovers).toEqual([{ position: { x: 6, y: 2 }, direction: 'N' }]);
+    expect(finalRovers).toEqual([]);
+    expect(plateau).toEqual({ width: 5, height: 5 });
+  });
+
+  it("processInputWithErrors should report collision when two rovers end up in the same position", () => {
+    const input = `5 5\n1 2 N\nM\n1 1 N\nMM`; // Rover 1 moves to 1 3 N, Rover 2 moves to 1 3 N
+    const { results, errors, initialRovers, finalRovers, plateau } = processInputWithErrors(input);
+    expect(results).toEqual(["1 3 N", "1 3 N"]);
+    expect(errors).toEqual([
+      {
+        rover: 2,
+        errors: ["Collision detected at (1,3)"],
+      },
+    ]);
+    expect(initialRovers).toEqual([
+      { position: { x: 1, y: 2 }, direction: 'N' },
+      { position: { x: 1, y: 1 }, direction: 'N' },
+    ]);
+    expect(finalRovers).toEqual([
+      { position: { x: 1, y: 3 }, direction: 'N' },
+    ]);
     expect(plateau).toEqual({ width: 5, height: 5 });
   });
 });
