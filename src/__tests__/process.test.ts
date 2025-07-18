@@ -89,4 +89,24 @@ describe("process", () => {
     ]);
     expect(plateau).toEqual({ width: 5, height: 5 });
   });
+
+  it("processInputWithErrors should report error for initial rover collision", () => {
+    const input = `5 5\n1 2 N\nM\n1 2 N\nM`; // Two rovers start at the same position
+    const { results, errors, initialRovers, finalRovers, plateau } = processInputWithErrors(input);
+    expect(results).toEqual(["1 3 N"]); // Only the first rover's result is processed
+    expect(errors).toEqual([
+      {
+        rover: 2,
+        errors: ["Initial position (1,2) collides with another rover."],
+      },
+    ]);
+    expect(initialRovers).toEqual([
+      { position: { x: 1, y: 2 }, direction: 'N' },
+      { position: { x: 1, y: 2 }, direction: 'N' },
+    ]);
+    expect(finalRovers).toEqual([
+      { position: { x: 1, y: 3 }, direction: 'N' },
+    ]);
+    expect(plateau).toEqual({ width: 5, height: 5 });
+  });
 });
