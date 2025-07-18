@@ -7,6 +7,12 @@ export function displayInitialMessage(): void {
     "Please enter the plateau size, followed by rover positions and commands."
   );
   console.log("Enter an empty line twice to finish input.");
+  console.log("Example:");
+  console.log("5 5");
+  console.log("1 2 N");
+  console.log("LMLMLMLMM");
+  console.log("3 3 E");
+  console.log("MMRMMRMRRM\n");
 }
 
 export function displayMarsRoverResults(result: ProcessInputResult): void {
